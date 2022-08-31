@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 
 import axios from 'axios';
+var util = require('util');
+
 export const repos = Router();
 
 repos.get('/', async (_: Request, res: Response) => {
@@ -11,9 +13,9 @@ repos.get('/', async (_: Request, res: Response) => {
     const repos = await axios.get(
       'https://api.github.com/users/silverorange/repos'
     );
-    console.log(repos);
-    console.log(typeof repos);
-    res.status(200).json({ status: 200 });
+    console.log(Object.keys(repos));
+    console.log(repos.data);
+    res.status(200).json({ status: 200, repos: repos.data });
   } catch (err: any) {
     console.log(err.message);
   }
