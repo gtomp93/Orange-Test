@@ -8,7 +8,9 @@ import { Repo } from './models/Repo';
 
 interface RepoState {
   repos: Repo[];
+  displayed: Repo[];
   status: string;
+  languages: string[];
 }
 
 interface RepoContextType {
@@ -29,7 +31,7 @@ export const REPOS_CONTEXT = createContext<RepoContextType>({
   filter: () => {
     return undefined;
   },
-  state: { repos: [], status: '' },
+  state: { repos: [], status: '', languages: [], displayed: [] },
   error: () => {
     return undefined;
   },
@@ -51,10 +53,21 @@ const reducer = (state: RepoState, action: Actions) => {
     case 'loading':
       return { ...state, status: 'loading' };
     case 'retrieveData':
-      return { repos: action.payload, status: 'loaded' };
+      const languages = action.payload.reduce((acc: any, cur: any) => {
+        return !acc.includes(cur.language) ? [...acc, cur.language] : acc;
+      }, []);
+      return {
+        repos: action.payload,
+        status: 'loaded',
+        languages,
+        displayed: action.payload,
+      };
     case 'filter':
-      //will figure this out later
-      return { ...state };
+      const filteredRepos = state.repos.filter(
+        (repo) => repo.language === action.payload
+      );
+      console.log(filteredRepos);
+      return { ...state, displayed: filteredRepos };
     default:
       return { ...state };
   }
@@ -63,7 +76,12 @@ const reducer = (state: RepoState, action: Actions) => {
 export const REPO_CONTEXT_PROVIDER: React.FC<ChildrenProps> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(reducer, { repos: [], status: '' });
+  const [state, dispatch] = useReducer(reducer, {
+    repos: [],
+    status: '',
+    languages: [],
+    displayed: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,7 +116,8 @@ export const REPO_CONTEXT_PROVIDER: React.FC<ChildrenProps> = ({
 
   const filter = useCallback(
     (search: string) => {
-      dispatch({ type: 'retrieveData', payload: search });
+      console.log(search);
+      dispatch({ type: 'filter', payload: search });
     },
     [dispatch]
   );

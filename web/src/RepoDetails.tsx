@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import SINGLE_REPO from './Repo';
 import { REPOS_CONTEXT } from './ReposContext';
 import ReactMarkdown from 'react-markdown';
+import styled from 'styled-components';
 
 const REPO_DETAILS: React.FC = () => {
   const { id } = useParams();
@@ -28,11 +29,17 @@ const REPO_DETAILS: React.FC = () => {
   }, [REPO_INFO]);
 
   return (
-    <>
+    <CONTAINER>
       <SINGLE_REPO repo={REPO_INFO} />
       <ReactMarkdown children={markdown} />
-    </>
+    </CONTAINER>
   );
 };
 
 export default REPO_DETAILS;
+
+const CONTAINER = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;

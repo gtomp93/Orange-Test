@@ -7,17 +7,13 @@ import { REPOS_CONTEXT } from './ReposContext';
 
 const REPO_LIST = () => {
   const {
-    state: { repos, status },
+    state: { repos, status, languages, displayed },
     filter,
   } = useContext(REPOS_CONTEXT);
   console.log(repos);
 
   //I tried to create an array of the lanaguage using a set but
-  // typescript won't let me turn it into an array
-
-  const languages = repos.reduce((acc: any, cur: any) => {
-    return !acc.includes(cur.language) ? [...acc, cur.language] : acc;
-  }, []);
+  // typescript won't let me turn a set into an array
 
   return (
     <LIST_CONTAINER>
@@ -35,7 +31,7 @@ const REPO_LIST = () => {
             })}
           </LANGUAGES_LIST>
           <LIST>
-            {repos.map((repo) => {
+            {displayed.map((repo) => {
               console.log(repo);
               return (
                 <SINGLE_REPO repo={repo} key={repo.id}>
