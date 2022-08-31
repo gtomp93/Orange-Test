@@ -66,16 +66,20 @@ export const REPO_CONTEXT_PROVIDER: React.FC<ChildrenProps> = ({
   const [state, dispatch] = useReducer(reducer, { repos: [], status: '' });
 
   useEffect(() => {
-    fetch('repos')
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject('error');
-        }
-      })
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err.message));
+    const fetchData = async () => {
+      dispatch({ type: 'loading' });
+      fetch('repos')
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return Promise.reject('error');
+          }
+        })
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err.message));
+    };
+    fetchData();
   }, []);
 
   const loading = useCallback(() => {

@@ -1,7 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+import { REPOS_CONTEXT } from './ReposContext';
 
 const REPO_LIST = () => {
-  return <div>RepoList</div>;
+  const {
+    state: { repos, status },
+  } = useContext(REPOS_CONTEXT);
+  console.log('here');
+
+  return (
+    <LIST_CONTAINER>
+      {status === 'loading' ? (
+        <div>Loading</div>
+      ) : (
+        <LIST>
+          {repos.map((repo) => {
+            console.log(repo);
+            return <>ok</>;
+          })}
+        </LIST>
+      )}
+    </LIST_CONTAINER>
+  );
 };
 
 export default REPO_LIST;
+
+const LIST_CONTAINER = styled.div``;
+
+const LIST = styled.div``;
