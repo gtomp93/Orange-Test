@@ -66,7 +66,7 @@ export const REPO_CONTEXT_PROVIDER: React.FC<ChildrenProps> = ({
   const [state, dispatch] = useReducer(reducer, { repos: [], status: '' });
 
   useEffect(() => {
-    fetch('http://localhost:4000/repos')
+    fetch('repos')
       .then((res) => {
         if (res.ok) {
           return res.json();
