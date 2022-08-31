@@ -9,11 +9,13 @@ import RepoList from './RepoList';
 export function App() {
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<RepoList />} />
-        <Route path="/repos/:id" element={<RepoDetails />} />
-      </Routes>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<RepoList />} />
+          <Route path="/repos/:id" element={<RepoDetails />} />
+        </Routes>
+      </div>
     </Router>
   );
 }

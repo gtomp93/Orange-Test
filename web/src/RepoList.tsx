@@ -32,6 +32,14 @@ const REPO_LIST = () => {
 
 export default REPO_LIST;
 
-const LIST_CONTAINER = styled.div``;
+const LIST_CONTAINER = styled.div`
+  width: 100%;
+  /* background: green; */
+`;
 
-const LIST = styled.div``;
+const LIST = styled.div`
+  margin: 0 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+`;

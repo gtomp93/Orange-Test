@@ -26,6 +26,6 @@ const REPO_CONTAINER = styled.div`
   &:hover {
     transform: scale(1.05);
   }
-  max-width: 400px;
-  width: 80%;
+  /* max-width: 400px;
+  width: 80%; */
 `;
