@@ -4,10 +4,13 @@ import { App } from './App';
 import { reportWebVitals } from './reportWebVitals';
 
 import './index.css';
+import { REPO_CONTEXT_PROVIDER } from './ReposContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <REPO_CONTEXT_PROVIDER>
+      <App />
+    </REPO_CONTEXT_PROVIDER>
   </React.StrictMode>,
   document.getElementById('root')
 );

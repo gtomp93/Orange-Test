@@ -1,36 +1,52 @@
-import React, { createContext, useCallback, useReducer } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useReducer,
+} from 'react';
 import { Repo } from './models/Repo';
 
-type repoState = {
+interface RepoState {
   repos: Repo[];
   status: string;
-};
+}
 
-type RepoContextType = {
+interface RepoContextType {
   loading: () => void;
   retrieveData: (payload: Repo[]) => void;
   filter: (payload: string) => void;
-  state: repoState;
-};
+  error: () => void;
+  state: RepoState;
+}
 
-export const ReposContext = createContext<RepoContextType>({
-  loading: () => {},
-  retrieveData: () => {},
-  filter: () => {},
+export const REPOS_CONTEXT = createContext<RepoContextType>({
+  loading: () => {
+    return undefined;
+  },
+  retrieveData: () => {
+    return undefined;
+  },
+  filter: () => {
+    return undefined;
+  },
   state: { repos: [], status: '' },
+  error: () => {
+    return undefined;
+  },
 });
 
-type childrenProps = {
+interface ChildrenProps {
   children: JSX.Element;
-};
+}
 
 //Right now I have payload set to any => I will try to define the payloads later
-type actions =
+type Actions =
   | { type: 'loading' }
   | { type: 'retrieveData'; payload: any }
-  | { type: 'filter'; payload: any };
+  | { type: 'filter'; payload: any }
+  | { type: 'error' };
 
-const reducer = (state: repoState, action: actions) => {
+const reducer = (state: RepoState, action: Actions) => {
   switch (action.type) {
     case 'loading':
       return { ...state, status: 'loading' };
@@ -44,8 +60,23 @@ const reducer = (state: repoState, action: actions) => {
   }
 };
 
-export const RepoContextProvider: React.FC<childrenProps> = ({ children }) => {
+export const REPO_CONTEXT_PROVIDER: React.FC<ChildrenProps> = ({
+  children,
+}) => {
   const [state, dispatch] = useReducer(reducer, { repos: [], status: '' });
+
+  useEffect(() => {
+    fetch('http://localhost:4000/repos')
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject('error');
+        }
+      })
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err.message));
+  }, []);
 
   const loading = useCallback(() => {
     dispatch({ type: 'loading' });
@@ -54,6 +85,7 @@ export const RepoContextProvider: React.FC<childrenProps> = ({ children }) => {
   const retrieveData = useCallback(
     (repos: Repo[]) => {
       dispatch({ type: 'retrieveData', payload: repos });
+      return undefined;
     },
     [dispatch]
   );
@@ -65,14 +97,21 @@ export const RepoContextProvider: React.FC<childrenProps> = ({ children }) => {
     [dispatch]
   );
 
+  const error = useCallback(() => {
+    dispatch({ type: 'error' });
+  }, [dispatch]);
+
   return (
-    <ReposContext.Provider
+    <REPOS_CONTEXT.Provider
       value={{
         loading,
         retrieveData,
         filter,
+        error,
         state,
       }}
-    ></ReposContext.Provider>
+    >
+      {children}
+    </REPOS_CONTEXT.Provider>
   );
 };
