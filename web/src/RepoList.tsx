@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import SINGLE_REPO from './Repo';
 import { REPOS_CONTEXT } from './ReposContext';
 
 const REPO_LIST = () => {
@@ -16,7 +17,11 @@ const REPO_LIST = () => {
         <LIST>
           {repos.map((repo) => {
             console.log(repo);
-            return <>ok</>;
+            return (
+              <SINGLE_REPO repo={repo} key={repo.id}>
+                ok
+              </SINGLE_REPO>
+            );
           })}
         </LIST>
       )}
