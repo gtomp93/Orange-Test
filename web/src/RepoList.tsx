@@ -6,7 +6,7 @@ const REPO_LIST = () => {
   const {
     state: { repos, status },
   } = useContext(REPOS_CONTEXT);
-  console.log('here');
+  console.log(repos);
 
   return (
     <LIST_CONTAINER>

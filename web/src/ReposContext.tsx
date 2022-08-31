@@ -51,7 +51,7 @@ const reducer = (state: RepoState, action: Actions) => {
     case 'loading':
       return { ...state, status: 'loading' };
     case 'retrieveData':
-      return { ...state, status: 'loading' };
+      return { repos: action.payload, status: 'loaded' };
     case 'filter':
       //will figure this out later
       return { ...state };
@@ -76,7 +76,9 @@ export const REPO_CONTEXT_PROVIDER: React.FC<ChildrenProps> = ({
             return Promise.reject('error');
           }
         })
-        .then((data) => console.log(data))
+        .then((data) => {
+          dispatch({ type: 'retrieveData', payload: data.repos });
+        })
         .catch((err) => console.log(err.message));
     };
     fetchData();
