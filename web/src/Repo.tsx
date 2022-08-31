@@ -19,4 +19,13 @@ const SINGLE_REPO: React.FC<Props> = ({ repo }) => {
 
 export default SINGLE_REPO;
 
-const REPO_CONTAINER = styled.div``;
+const REPO_CONTAINER = styled.div`
+  border: 2px solid orange;
+  margin-bottom: 20px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+  max-width: 400px;
+  width: 80%;
+`;

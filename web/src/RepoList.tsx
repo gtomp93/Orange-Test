@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import Loading from './Loading';
 import SINGLE_REPO from './Repo';
 import { REPOS_CONTEXT } from './ReposContext';
 
@@ -12,7 +13,7 @@ const REPO_LIST = () => {
   return (
     <LIST_CONTAINER>
       {status === 'loading' ? (
-        <div>Loading</div>
+        <Loading />
       ) : (
         <LIST>
           {repos.map((repo) => {
